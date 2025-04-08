@@ -1,0 +1,26 @@
+---
+- name: Install Nginx and Deploy Static Site
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Start and enable nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy static website to Nginx root
+      copy:
+        src: website/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0755'
+        force: yes
+
